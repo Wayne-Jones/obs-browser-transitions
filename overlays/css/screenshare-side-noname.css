@@ -1,0 +1,6 @@
+.hole{top:8.125rem}
+@media (max-aspect-ratio:1/1){
+  /* bottom bar holds just a 16:9 camera window */
+  .sidebar,.flip .sidebar{height:33.1rem}
+  .hole{left:3.125rem;right:auto;top:2.5rem;width:50rem;height:28.125rem}
+}

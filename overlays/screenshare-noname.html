@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Screenshare Scene (no nameplate)</title>
+<!--
+============================================================
+   SCREENSHARE / GAMEPLAY scene overlay  (OBS Browser Source, 1920x1080, TRANSPARENT)
+   Layer ABOVE your screen/game capture. Webcam frame is hollow so the camera shows through.
+   Place/crop your webcam source (default pos=br):   x=1392  y=762  width=480  height=270
+     pos=bl -> x=48 y=762 · pos=tr -> x=1392 y=48 · pos=tl -> x=48 y=48
+   Params: pos (br|bl|tr|tl), cam=0 (no webcam frame), name, title, accent, bg=1
+============================================================
+   NO-NAMEPLATE variant. Vertical canvas 1080x1920: webcam (pos=br) x=518 y=1585, 518x292 (pos=bl x=43).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/screenshare.css">
+<link rel="stylesheet" href="css/screenshare-noname.css">
+</head>
+<body class="pos-br">
+<div class="stage">
+
+  <div class="cam"><div class="cam-badge"><span class="dot"></span>Cam</div></div>
+</div>
+<div class="hint">Params: ?pos=bl&amp;cam=0&amp;name=Alex&amp;title=Ranked%20grind · bg=1 for checkerboard</div>
+<script src="js/base.js"></script>
+<script src="js/screenshare.js"></script>
+</body>
+</html>

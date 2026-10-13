@@ -1,0 +1,33 @@
+.cam{position:absolute;width:25rem;height:14.0625rem;border:max(1px,.055rem) solid var(--line);border-radius:.5rem;
+  box-shadow:.4rem .4rem 0 var(--accent);animation:rise .9s .1s cubic-bezier(.2,.9,.2,1) both}
+.pos-br .cam{right:2.5rem;bottom:2.5rem}
+.pos-bl .cam{left:2.5rem;bottom:2.5rem}
+.pos-tr .cam{right:2.5rem;top:2.5rem}
+.pos-tl .cam{left:2.5rem;top:2.5rem}
+.cam .cam-badge{position:absolute;left:.7rem;top:.7rem;display:flex;align-items:center;gap:.5rem;padding:.25rem .55rem;
+  background:rgba(13,13,15,.8);border:max(1px,.055rem) solid var(--line);border-radius:.3rem;
+  font:700 .65rem 'Space Mono',monospace;letter-spacing:.2em;text-transform:uppercase}
+.cam-badge .dot{width:.5rem;height:.5rem}
+.info{position:absolute;left:2.5rem;bottom:2.5rem;display:flex;align-items:stretch;animation:rise .9s .2s cubic-bezier(.2,.9,.2,1) both}
+.pos-bl .info{left:auto;right:2.5rem}
+.info .bar{width:.6rem;background:var(--gradient-vertical);border-radius:.5rem 0 0 .5rem}
+.info .body{padding:.8rem 1.6rem .9rem 1.2rem;border-radius:0 .5rem .5rem 0}
+.info h1{font-size:1.9rem;line-height:1;font-weight:700;letter-spacing:-.02em}
+.info p{margin-top:.45rem;font-size:.8rem;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+.nocam .cam{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(1.4rem)}to{opacity:1;transform:none}}
+@media (max-aspect-ratio:1/1){
+  /* VERTICAL canvas 1080x1920 (pos=br): webcam source x=518 y=1361 width=518 height=292
+     pos=bl -> x=43 y=1361 · pos=tr -> x=518 y=43 · pos=tl -> x=43 y=43 */
+  .cam{width:27rem;height:15.188rem;border-radius:1.1rem;box-shadow:.9rem .9rem 0 var(--accent)}
+  .pos-br .cam{right:2.25rem;bottom:13.95rem}
+  .pos-bl .cam{left:2.25rem;bottom:13.95rem}
+  .pos-tr .cam{right:2.25rem;top:2.25rem}
+  .pos-tl .cam{left:2.25rem;top:2.25rem}
+  .info,.pos-bl .info{left:2.25rem;right:2.25rem;bottom:2.25rem}
+  .info .bar{width:1.35rem;border-radius:1.1rem 0 0 1.1rem}
+  .info .body{flex:1;min-width:0;padding:1.8rem 3.6rem 2rem 2.7rem;border-radius:0 1.1rem 1.1rem 0}
+  .info h1{font-size:3.825rem}.info p{font-size:1.575rem;margin-top:1rem}
+  .cam .cam-badge{font-size:1.238rem;left:1.238rem;top:1.238rem;padding:.55rem 1.2rem;gap:1.1rem}
+  .cam-badge .dot{width:1.1rem;height:1.1rem}
+}

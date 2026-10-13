@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stinger Transition</title>
+<!--
+============================================================
+   STINGER TRANSITION for the "Browser Transition" OBS plugin (exeldro)
+   https://obsproject.com/forum/resources/browser-transition.1653/
+
+   Setup: Scene Transitions "+" -> Browser Transition. Point it at this file
+   (Local file), 1920x1080. Suggested: duration 1000-1400 ms, transition point 50%.
+   The page stays fully transparent until the plugin fires transitionStart, then
+   wipes in, is fully covering the screen at the transition point (that is the
+   moment OBS swaps scenes), and wipes out. Leave "Track matte" OFF.
+
+   Params: channel, accent (hex without #), word (text shown at the midpoint)
+   Preview in a normal browser: add ?bg=1  -> loops every few seconds, click to replay.
+           optional  duration=1200  tp=0.5  while previewing.
+   Portrait screens / a vertical 1080x1920 canvas switch to a vertical layout automatically.
+============================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/stinger.css">
+</head>
+<body>
+<div class="layer" id="accent-layer"></div>
+<div class="layer" id="ink"></div>
+<div class="midpoint-message" id="midpoint-message"><div class="message-content" id="message-content">
+  <div class="message-kicker"><span class="dot"></span><span id="channel">yourchannel</span></div>
+  <h1 id="word">Up <span class="highlight">next</span></h1>
+</div></div>
+<div class="hint">Stinger preview (loops). Params: ?bg=1&amp;duration=1200&amp;tp=0.5&amp;word=Be%20right%20back</div>
+<script src="js/base.js"></script>
+<script src="js/stinger.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Screenshare Scene (Sidebar)</title>
+<!--
+============================================================
+   SCREENSHARE scene, SIDEBAR variant  (OBS Browser Source, 1920x1080)
+   Screen on the left, a full-height webcam sidebar on the right.
+   Layer this ABOVE your sources. The webcam window is hollow, the left side is transparent.
+
+   Place your sources (1920x1080 canvas):
+     Screen / game capture:  x=0     y=0    width=1440  height=1080   (or fit 1440x810 centered)
+     Webcam (9:16 portrait): x=1464  y=96   width=432   height=768
+   With ?side=left the sidebar moves to the left:
+     Webcam: x=24  y=96  432x768     Screen: x=480  y=0  1440x1080
+
+   Params: side=left, name, title, accent (hex without #), bg=1 (checkerboard preview)
+   Portrait screens / a vertical 1080x1920 canvas switch to a vertical layout automatically.
+============================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/screenshare-side.css">
+</head>
+<body>
+<div class="stage">
+  <div class="sidebar">
+    <div class="edge"></div>
+    <div class="hole"><div class="cam-badge"><span class="dot"></span>Cam</div></div>
+    <div class="info">
+      <div class="bar"></div>
+      <div class="body panel"><h1 id="name">Your Name</h1><p id="title">Playing • Talking • Making</p></div>
+    </div>
+  </div>
+</div>
+<div class="hint">Params: ?side=left&amp;name=Alex&amp;title=Ranked%20grind · bg=1 for checkerboard</div>
+<script src="js/base.js"></script>
+<script src="js/screenshare-side.js"></script>
+</body>
+</html>

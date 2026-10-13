@@ -1,0 +1,33 @@
+.sidebar{position:absolute;left:75rem;top:0;width:25rem;height:56.25rem;overflow:hidden}
+.flip .sidebar{left:0}
+.edge{position:absolute;left:0;top:0;bottom:0;width:.3rem;background:var(--gradient-vertical);z-index:2}
+.flip .edge{left:auto;right:0}
+/* hollow cam window: the huge ink "shadow" paints the sidebar and leaves the window transparent */
+.hole{position:absolute;left:1.25rem;top:5rem;width:22.5rem;height:40rem;border-radius:.6rem;
+  border:max(1px,.055rem) solid var(--line);
+  box-shadow:.5rem .5rem 0 var(--accent),0 0 0 100rem var(--ink);
+  animation:fade .9s .1s ease both}
+.hole .cam-badge{position:absolute;left:.9rem;top:.9rem;display:flex;align-items:center;gap:.5rem;padding:.3rem .6rem;
+  background:rgba(13,13,15,.8);border:max(1px,.055rem) solid var(--line);border-radius:.3rem;
+  font:700 .7rem 'Space Mono',monospace;letter-spacing:.2em;text-transform:uppercase}
+.cam-badge .dot{width:.5rem;height:.5rem}
+.info{position:absolute;left:1.25rem;top:47.2rem;width:22.5rem;display:flex;align-items:stretch;
+  animation:rise .9s .2s cubic-bezier(.2,.9,.2,1) both}
+.info .bar{width:.6rem;background:var(--gradient-vertical);border-radius:.5rem 0 0 .5rem}
+.info .body{flex:1;padding:.8rem 1.2rem .9rem 1.1rem;border-radius:0 .5rem .5rem 0;min-width:0}
+.info h1{font-size:2rem;line-height:1;font-weight:700;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.info p{margin-top:.45rem;font-size:.72rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(1.4rem)}to{opacity:1;transform:none}}
+@media (max-aspect-ratio:1/1){
+  /* VERTICAL canvas 1080x1920: bottom bar. Webcam source (9:16): x=592 y=1087 width=436 height=776 */
+  .sidebar,.flip .sidebar{left:0;top:auto;bottom:0;width:100%;height:45.9rem}
+  .edge,.flip .edge{left:0;right:0;top:0;bottom:auto;width:auto;height:.7rem;background:var(--gradient-horizontal)}
+  .hole{left:auto;right:2.7rem;top:2.5rem;width:22.7rem;height:40.4rem;border-radius:1.3rem;
+    box-shadow:.8rem .8rem 0 var(--accent),0 0 0 100rem var(--ink)}
+  .info{left:2.7rem;top:auto;bottom:3rem;width:calc(100% - 22.7rem - 8.1rem)}
+  .info .bar{width:1.35rem;border-radius:1.1rem 0 0 1.1rem}
+  .info .body{padding:1.8rem 2.7rem 2rem 2.5rem;border-radius:0 1.1rem 1.1rem 0}
+  .info h1{font-size:3.6rem}.info p{font-size:1.35rem}
+  .hole .cam-badge{font-size:1.1rem;left:1.1rem;top:1.1rem;padding:.55rem 1.2rem}
+}

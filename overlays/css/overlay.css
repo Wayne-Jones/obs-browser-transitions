@@ -1,0 +1,100 @@
+:root{
+  --flag-magenta:#D60270;          /* bi flag: magenta-red */
+  --flag-purple:#9B4F96;          /* purple */
+  --flag-blue:#0038A8;          /* blue */
+  --accent:#B05AAB;      /* solid tone for hard shadows / outlines */
+  --accent-text:#EE5BA6; /* lighter tone for small text and dots on dark */
+  --on-accent:#FFFFFF;
+  --gradient-vertical:linear-gradient(180deg,var(--flag-magenta) 0%,var(--flag-purple) 50%,var(--flag-blue) 100%);
+  --gradient-horizontal:linear-gradient(90deg,var(--flag-magenta) 0%,var(--flag-purple) 50%,var(--flag-blue) 100%);
+  --ink:#0D0D0F;
+  --ink-raised:#17171A;
+  --line:rgba(255,255,255,.14);
+  --text:#F4F4F1;
+  --muted:#9A9AA2;
+  /* 1rem = 1% of the largest 16:9 box that fits the viewport */
+  font-size:min(1vw, 1.7778vh);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:transparent}
+body{font-family:'Space Grotesk',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body.preview-bg{background:
+  conic-gradient(#2a2a2e 25%,#1e1e22 0 50%,#2a2a2e 0 75%,#1e1e22 0) 0 0/2rem 2rem}
+
+.stage{position:fixed;left:50%;top:50%;width:100rem;height:56.25rem;transform:translate(-50%,-50%);}
+.mono{font-family:'Space Mono',ui-monospace,monospace}
+
+/* shared panel: ink block, hairline, hard accent shadow */
+.panel{background:var(--ink);border:max(1px,.055rem) solid var(--line);border-radius:.5rem;
+  box-shadow:.4rem .4rem 0 var(--accent)}
+
+
+/* ---------- lower third ---------- */
+.lower{position:absolute;left:3rem;bottom:3.4rem;display:flex;align-items:stretch;
+  clip-path:inset(-2rem 100% -2rem -2rem);transition:clip-path .7s cubic-bezier(.7,0,.2,1)}
+.lower.on{clip-path:inset(-2rem -2rem -2rem -2rem)}
+.lower .bar{width:.7rem;background:var(--gradient-vertical);border-radius:.5rem 0 0 .5rem}
+.lower .body{padding:1rem 2rem 1.1rem 1.5rem;border-radius:0 .5rem .5rem 0;min-width:22rem}
+.lower h1{font-size:2.6rem;line-height:1;font-weight:700;letter-spacing:-.02em}
+.lower p{margin-top:.55rem;font-size:.95rem;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+.lower .panel{box-shadow:.4rem .4rem 0 var(--accent)}
+
+/* ---------- alert toast (top-center) ---------- */
+.alert{position:absolute;left:50%;top:2.6rem;transform:translate(-50%,-8rem);opacity:0;
+  display:flex;align-items:center;gap:1.2rem;padding:1rem 2rem 1rem 1rem;
+  transition:transform .6s cubic-bezier(.2,1.2,.3,1),opacity .3s}
+.alert.on{transform:translate(-50%,0);opacity:1}
+.alert .icon{width:3.4rem;height:3.4rem;border-radius:.4rem;background:var(--gradient-vertical);color:var(--on-accent);
+  display:grid;place-items:center;font-size:1.8rem;font-weight:700}
+.alert small{display:block;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-text)}
+.alert strong{display:block;font-size:2rem;line-height:1.1;margin-top:.15rem;letter-spacing:-.01em}
+.alert em{font-style:normal;color:var(--muted);font-size:.95rem}
+
+/* ---------- goal (bottom-right) ---------- */
+.goal{position:absolute;right:3rem;bottom:3.4rem;width:21rem;padding:.9rem 1.1rem 1.05rem;
+  box-shadow:.25rem .25rem 0 var(--accent);transition:opacity .5s,transform .5s}
+.goal.off{opacity:0;transform:translateY(1rem)}
+.goal .row{display:flex;justify-content:space-between;align-items:baseline;font-size:.8rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.goal .row b{font-family:'Space Mono',monospace;font-size:1.05rem;color:var(--text);letter-spacing:0}
+.track{height:.45rem;background:var(--ink-raised);border-radius:1rem;margin-top:.8rem;overflow:hidden;border:max(1px,.055rem) solid var(--line)}
+.fill{height:100%;width:0;background:var(--gradient-horizontal);border-radius:1rem;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+
+/* ---------- scene card (starting / brb / ending) ---------- */
+.scene{position:absolute;inset:0;display:grid;place-items:center;background:rgba(13,13,15,.0);
+  opacity:0;pointer-events:none;transition:opacity .6s,background .6s}
+.scene.on{opacity:1;background:rgba(13,13,15,.88)}
+.scene .card{text-align:left;padding:3.2rem 4.4rem 3.4rem;transform:translateY(2rem);transition:transform .8s cubic-bezier(.2,.9,.2,1)}
+.scene.on .card{transform:none}
+.scene .kicker{font-size:1rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-text)}
+.scene h2{font-size:7.2rem;line-height:.95;font-weight:700;letter-spacing:-.045em;margin-top:.8rem}
+.scene h2 .highlight{font-style:normal;background:var(--gradient-vertical);color:var(--on-accent);padding:0 .9rem;margin-left:-.9rem;display:inline-block}
+.scene .count{margin-top:1.6rem;font-family:'Space Mono',monospace;font-size:2.4rem;color:var(--muted)}
+.scene .count:empty{display:none}
+
+/* preview hint */
+.hint{position:fixed;left:1rem;bottom:1rem;font:12px 'Space Mono',monospace;color:#888;display:none}
+body.preview-bg .hint{display:block}
+
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01s!important;animation:none!important}}
+@media (max-aspect-ratio:1/1){
+  :root{font-size:min(1.7778vw,1vh)}
+  body.preview-bg .hint{display:none}
+  .stage{left:50%;top:0;width:56.25rem;height:100%;transform:translateX(-50%)}
+  .panel{border-radius:1.1rem;box-shadow:.9rem .9rem 0 var(--accent)}
+  .dot{width:1.6rem;height:1.6rem}
+  .alert{top:2.25rem;max-width:calc(100% - 4.5rem);width:max-content;padding:1.6rem 2.7rem 1.6rem 1.6rem;gap:1.8rem}
+  .alert .icon{width:5.85rem;height:5.85rem;font-size:3.15rem;border-radius:.9rem}
+  .alert strong{font-size:3.4rem}.alert small{font-size:1.45rem}.alert em{font-size:1.8rem}
+  .lower{left:2.25rem;right:2.25rem;bottom:2.25rem}
+  .lower .bar{width:1.5rem;border-radius:1.1rem 0 0 1.1rem}
+  .lower .body{flex:1;min-width:0;padding:1.8rem 2.7rem 2rem 2.5rem;border-radius:0 1.1rem 1.1rem 0}
+  .lower h1{font-size:4.5rem}.lower p{font-size:1.6rem;letter-spacing:.12em}
+  .goal{left:2.25rem;right:2.25rem;bottom:17.5rem;width:auto;padding:2rem 2.5rem 2.3rem;box-shadow:.55rem .55rem 0 var(--accent)}
+  .goal .row{font-size:1.8rem}.goal .row b{font-size:2.4rem}
+  .track{height:1rem;margin-top:1.8rem}
+  .scene .card{width:calc(100% - 4.5rem);padding:4.5rem 3.6rem}
+  .scene h2{font-size:9.45rem}
+  .scene h2 .highlight{padding:0 1.35rem .14em;margin-left:-1.35rem}
+  .scene .kicker{font-size:1.8rem}.scene .count{font-size:4.5rem}
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stream Ending</title>
+<!--
+============================================================
+   STREAM ENDING scene  (OBS Browser Source, 1920x1080, full-screen scene)
+   Params: next (e.g. "Friday 8pm"), socials (comma list, e.g. "twitter/you,youtube/you"),
+           msg, channel, accent, transparent
+   Portrait screens / a vertical 1080x1920 canvas switch to a vertical layout automatically.
+============================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/ending.css">
+</head>
+<body class="solid">
+<div class="stage">
+  <div class="top rise">
+    <div class="chip panel compact"><span class="dot"></span><b id="channel">yourchannel</b><span class="chip-label">signing off</span></div>
+    <div class="clock" id="clock"></div>
+  </div>
+  <main class="hero">
+    <div class="kicker rise delay-1">Thank you</div>
+    <h1 class="rise delay-2">Thanks for <span class="highlight">watching</span></h1>
+    <p class="subtitle rise delay-2" id="msg">That's a wrap. Go raid someone nice.</p>
+    <div class="cols rise delay-3">
+      <div class="panel compact"><h3>Next stream</h3><p id="next">Soon</p></div>
+      <div class="panel compact"><h3>Find me</h3><p class="mono-list" id="socials">yourchannel</p></div>
+    </div>
+  </main>
+  <div class="marquee"><div class="marquee-track" id="marquee-track"></div></div>
+</div>
+<div class="hint">Params: ?next=Friday%208pm&amp;socials=twitter/you,youtube/you&amp;msg=See%20you%20soon</div>
+<script src="js/base.js"></script>
+<script src="js/ending.js"></script>
+</body>
+</html>

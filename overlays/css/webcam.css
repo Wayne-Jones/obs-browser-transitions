@@ -1,0 +1,30 @@
+.cam{position:absolute;left:20rem;top:5rem;width:60rem;height:33.75rem;border:max(1px,.055rem) solid var(--line);border-radius:.6rem;
+  box-shadow:.6rem .6rem 0 var(--accent);
+  animation:camin .9s cubic-bezier(.2,.9,.2,1) both}
+@keyframes camin{from{opacity:0;transform:translateY(1.2rem)}to{opacity:1;transform:none}}
+/* corner brackets */
+.cam .cam-corner{position:absolute;width:2.2rem;height:2.2rem;border:0 solid var(--accent)}
+.cam .cam-corner:nth-child(1){left:-.6rem;top:-.6rem;border-width:.25rem 0 0 .25rem;border-radius:.6rem 0 0 0}
+.cam .cam-corner:nth-child(2){right:-.6rem;top:-.6rem;border-width:.25rem .25rem 0 0;border-radius:0 .6rem 0 0}
+.cam .cam-corner:nth-child(3){left:-.6rem;bottom:-.6rem;border-width:0 0 .25rem .25rem;border-radius:0 0 0 .6rem}
+.cam .cam-badge{position:absolute;left:1.2rem;top:1.2rem;display:flex;align-items:center;gap:.6rem;padding:.35rem .7rem;
+  background:rgba(13,13,15,.8);border:max(1px,.055rem) solid var(--line);border-radius:.3rem;
+  font:700 .8rem 'Space Mono',monospace;letter-spacing:.2em;text-transform:uppercase}
+.plate{position:absolute;left:20rem;top:42.4rem;display:flex;align-items:stretch;animation:rise .9s .25s cubic-bezier(.2,.9,.2,1) both}
+.plate .bar{width:.7rem;background:var(--gradient-vertical);border-radius:.5rem 0 0 .5rem}
+.plate .body{padding:.9rem 1.8rem 1rem 1.4rem;border-radius:0 .5rem .5rem 0}
+.plate h1{font-size:2.4rem;line-height:1;font-weight:700;letter-spacing:-.02em}
+.plate p{margin-top:.5rem;font-size:.9rem;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+.rise{animation:rise .9s cubic-bezier(.2,.9,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(1.6rem)}to{opacity:1;transform:none}}
+@media (max-aspect-ratio:1/1){
+  :root{font-size:min(1.7778vw,1vh)}
+  .stage{left:50%;top:0;width:56.25rem;height:100%;transform:translateX(-50%)}
+  /* vertical canvas 1080x1920: tall camera window, webcam source at x=60 y=168 width=960 height=1200 */
+  .cam{left:3.125rem;top:8.75rem;width:50rem;height:62.5rem;box-shadow:.8rem .8rem 0 var(--accent)}
+  .cam .cam-corner{width:3.2rem;height:3.2rem}
+  .cam .cam-badge{left:1.4rem;top:1.4rem;font-size:1.1rem;padding:.5rem 1rem}
+  .cam .cam-badge .dot{width:.9rem;height:.9rem}
+  .plate{left:3.125rem;top:74.5rem}
+  .plate h1{font-size:4rem}.plate p{font-size:1.2rem}
+}

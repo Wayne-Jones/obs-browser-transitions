@@ -1,0 +1,15 @@
+.layer{position:fixed;inset:0;pointer-events:none;visibility:hidden;will-change:clip-path}
+#accent-layer{background:var(--gradient-vertical)}
+#ink{background:var(--ink);
+  background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.5px);background-size:1.6rem 1.6rem}
+.midpoint-message{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0}
+.midpoint-message .message-content{display:flex;flex-direction:column;align-items:flex-start;gap:1.2rem;transform:translateY(1rem)}
+.midpoint-message .message-kicker{font-size:1rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-text);display:flex;align-items:center;gap:.8rem}
+.midpoint-message h1{font-size:8rem;line-height:.95;font-weight:700;letter-spacing:-.05em}
+.midpoint-message h1 .highlight{font-style:normal;background:var(--gradient-vertical);color:var(--on-accent);padding:0 .9rem .14em;margin-left:-.9rem;display:inline-block;line-height:.98}
+@media (max-aspect-ratio:1/1){
+  .midpoint-message .message-content{max-width:calc(100% - 7.2rem);gap:2.2rem}
+  .midpoint-message h1{font-size:9.45rem}
+  .midpoint-message h1 .highlight{padding:0 1.35rem .14em;margin-left:-1.35rem}
+  .midpoint-message .message-kicker{font-size:1.9rem}
+}
