@@ -22,6 +22,12 @@ const SCREEN_SIZES = [
   { name: 'full-hd', w: 1920, h: 1080 },
 ];
 
+// Elements that must stay on screen.
+const ON_SCREEN_SELECTOR = (
+  '.panel, h1, h2, .cam, .hole, .count, .track, .cols, .subtitle, .next, .chip,'
+  + ' .info, .goal, .alert, .card, .message-content, .plate'
+);
+
 let server: ReturnType<typeof spawn>;
 
 test.beforeAll(async () => {
@@ -39,23 +45,25 @@ test.describe('Layout', () => {
       const ctx = await browser.newContext({ viewport: { width: sz.w, height: sz.h } });
       const page = await ctx.newPage();
       for (const [key, url] of Object.entries(PAGE_URLS)) {
-        if (key === 'stinger') continue; // skip stinger for quick layout
+        if (key === 'stinger') continue;
         await page.goto(url, { waitUntil: 'networkidle' });
         await page.waitForTimeout(2000);
-        const off = await page.evaluate(() => {
-          const sel = '.panel, h1, h2, .cam, .hole, .count, .track, .cols, .subtitle, .next, .chip, .info, .goal, .alert, .card, .message-content, .plate';
-          const els = document.querySelectorAll(sel);
+        const off = await page.evaluate((selector: string) => {
+          const els = document.querySelectorAll(selector);
           const bad = [];
           for (const el of Array.from(els)) {
+            const style = getComputedStyle(el);
+            if (style.visibility === 'hidden' || style.display === 'none') continue;
             const box = el.getBoundingClientRect();
             if (box.width === 0) continue;
-            const hidden = (el as HTMLElement).style.display === 'none';
-            if (!hidden && (box.right > window.innerWidth + 2 || box.left < -2 || box.bottom > window.innerHeight + 2 || box.top < -2)) {
-              bad.push((el.id || el.className) + ' ' + Math.round(box.left) + ',' + Math.round(box.top));
-            }
+            const alertIsHidden = el.closest('.alert') && !document.getElementById('alert')?.classList.contains('on');
+            const sceneIsHidden = el.closest('.scene') && !document.getElementById('scene')?.classList.contains('on');
+            if (alertIsHidden || sceneIsHidden) continue;
+            const isOutside = box.right > window.innerWidth + 2 || box.left < -2 || box.bottom > window.innerHeight + 2 || box.top < -2;
+            if (isOutside) bad.push((el.id || el.className) + ' ' + Math.round(box.left) + ',' + Math.round(box.top));
           }
           return bad.slice(0, 3);
-        });
+        }, ON_SCREEN_SELECTOR);
         expect(off.length, `${key} off-screen at ${sz.name}`).toBe(0);
       }
       await ctx.close();
@@ -74,7 +82,8 @@ test.describe('Overlay behavior', () => {
   });
 
   test('stinger: transitionStart and transitionStop', async ({ page }) => {
-    await page.goto(PAGE_URLS.stinger, { waitUntil: 'networkidle' });
+    await page.goto('http://127.0.0.1:8099/src/transitions/stinger.html', { waitUntil: 'networkidle' });
+    await page.waitForTimeout(2000);
     // Check hidden initially
     const initial = await page.evaluate(() => getComputedStyle(document.getElementById('ink')!).visibility);
     expect(initial).toBe('hidden');
