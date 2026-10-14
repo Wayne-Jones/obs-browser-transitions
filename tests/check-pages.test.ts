@@ -4,17 +4,17 @@ import * as path from 'path';
 
 // URL mapping (updated to src paths for the current build)
 const PAGE_URLS: Record<string, string> = {
-  starting: 'http://127.0.0.1:8099/src/overlays/starting.html?minutes=5&next=Ranked%20grind',
-  brb: 'http://127.0.0.1:8099/src/overlays/brb.html?msg=Grabbing%20coffee&minutes=5',
-  ending: 'http://127.0.0.1:8099/src/overlays/ending.html?next=Friday%208pm&socials=twitter/you,youtube/you',
-  webcam: 'http://127.0.0.1:8099/src/overlays/webcam.html?bg=1&name=Alex',
-  screenshare: 'http://127.0.0.1:8099/src/overlays/screenshare.html?bg=1',
+  'starting': 'http://127.0.0.1:8099/src/overlays/starting.html?minutes=5&next=Ranked%20grind',
+  'brb': 'http://127.0.0.1:8099/src/overlays/brb.html?msg=Grabbing%20coffee&minutes=5',
+  'ending': 'http://127.0.0.1:8099/src/overlays/ending.html?next=Friday%208pm&socials=twitter/you,youtube/you',
+  'webcam': 'http://127.0.0.1:8099/src/overlays/webcam.html?bg=1&name=Alex',
+  'screenshare': 'http://127.0.0.1:8099/src/overlays/screenshare.html?bg=1',
   'screenshare-noname': 'http://127.0.0.1:8099/src/overlays/screenshare-noname.html?bg=1',
   'screenshare-side': 'http://127.0.0.1:8099/src/overlays/screenshare-side.html?bg=1',
   'screenshare-side-noname': 'http://127.0.0.1:8099/src/overlays/screenshare-side-noname.html?bg=1',
-  overlay: 'http://127.0.0.1:8099/src/overlays/overlay.html?bg=1&goal=42',
+  'overlay': 'http://127.0.0.1:8099/src/overlays/overlay.html?bg=1&goal=42',
   'overlay-noname': 'http://127.0.0.1:8099/src/overlays/overlay-noname.html?bg=1&goal=42',
-  stinger: 'http://127.0.0.1:8099/src/transitions/stinger.html?bg=1&word=Be%20right%20back',
+  'stinger': 'http://127.0.0.1:8099/src/transitions/stinger.html?bg=1&word=Be%20right%20back',
 };
 
 const SCREEN_SIZES = [
