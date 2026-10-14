@@ -55,7 +55,7 @@ def make_vertical_sheet(browser):
         ("screenshare.html", "?bg=1"),
         ("screenshare-side.html", "?bg=1"),
         ("overlay.html", "?bg=1&goal=42"),
-        ("stinger.html", "?bg=1&word=Be%20right%20back"),
+        ("../transitions/stinger.html", "?bg=1&word=Be%20right%20back"),
     ]
     thumbnail_size = (360, 640)
     columns = 4
@@ -119,7 +119,7 @@ def make_stinger_gif(browser):
     size = (1280, 720)
 
     page = new_page(browser, size)
-    page.goto(page_url("stinger.html", "?word=Be%20right%20back&channel=yourchannel"), wait_until="domcontentloaded")
+    page.goto(page_url("../transitions/stinger.html", "?word=Be%20right%20back&channel=yourchannel"), wait_until="domcontentloaded")
     # Two scenes sit behind the stinger: the first until the midpoint, then the second.
     page.evaluate("""() => {
       const addScene = (id, source) => {
@@ -129,8 +129,8 @@ def make_stinger_gif(browser):
         frame.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:0;z-index:-1';
         document.body.appendChild(frame);
       };
-      addScene('firstScene', 'starting.html?minutes=5&next=Ranked%20grind');
-      addScene('secondScene', 'brb.html?msg=Grabbing%20coffee');
+      addScene('firstScene', '../overlays/starting.html?minutes=5&next=Ranked%20grind');
+      addScene('secondScene', '../overlays/brb.html?msg=Grabbing%20coffee');
       document.getElementById('secondScene').style.visibility = 'hidden';
     }""")
     page.wait_for_timeout(ENTRANCE_ANIMATION_MS)

@@ -10,25 +10,27 @@ Needs:  pip install playwright pillow   (and a Chromium for Playwright)
 """
 
 import pathlib
+import subprocess
+import time
 import sys
 
 from playwright.sync_api import sync_playwright
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
-PAGES_DIR = REPO_ROOT / "overlays"
+PAGES_DIR = REPO_ROOT / "src" / "overlays"
 
 PAGE_URLS = {
-    "starting": "starting.html?minutes=5&next=Ranked%20grind",
-    "brb": "brb.html?msg=Grabbing%20coffee&minutes=5",
-    "ending": "ending.html?next=Friday%208pm&socials=twitter/you,youtube/you",
-    "webcam": "webcam.html?bg=1&name=Alex",
-    "screenshare": "screenshare.html?bg=1",
-    "screenshare-noname": "screenshare-noname.html?bg=1",
-    "screenshare-side": "screenshare-side.html?bg=1",
-    "screenshare-side-noname": "screenshare-side-noname.html?bg=1",
-    "overlay": "overlay.html?bg=1&goal=42",
-    "overlay-noname": "overlay-noname.html?bg=1&goal=42",
-    "stinger": "stinger.html?bg=1&word=Be%20right%20back",
+    "starting": "http://127.0.0.1:8099/src/overlays/starting.html?minutes=5&next=Ranked%20grind",
+    "brb": "http://127.0.0.1:8099/src/overlays/brb.html?msg=Grabbing%20coffee&minutes=5",
+    "ending": "http://127.0.0.1:8099/src/overlays/ending.html?next=Friday%208pm&socials=twitter/you,youtube/you",
+    "webcam": "http://127.0.0.1:8099/src/overlays/webcam.html?bg=1&name=Alex",
+    "screenshare": "http://127.0.0.1:8099/src/overlays/screenshare.html?bg=1",
+    "screenshare-noname": "http://127.0.0.1:8099/src/overlays/screenshare-noname.html?bg=1",
+    "screenshare-side": "http://127.0.0.1:8099/src/overlays/screenshare-side.html?bg=1",
+    "screenshare-side-noname": "http://127.0.0.1:8099/src/overlays/screenshare-side-noname.html?bg=1",
+    "overlay": "http://127.0.0.1:8099/src/overlays/overlay.html?bg=1&goal=42",
+    "overlay-noname": "http://127.0.0.1:8099/src/overlays/overlay-noname.html?bg=1&goal=42",
+    "stinger": "http://127.0.0.1:8099/src/transitions/stinger.html?bg=1&word=Be%20right%20back",
 }
 
 SCREEN_SIZES = {
@@ -80,8 +82,11 @@ def open_page(browser_context, url_with_query, wait_ms=1200):
     page = browser_context.new_page()
     page.page_errors = []
     page.on("pageerror", lambda error: page.page_errors.append(str(error)))
-    page.goto((PAGES_DIR / url_with_query.split("?")[0]).as_uri() + "?" + url_with_query.partition("?")[2],
-              wait_until="domcontentloaded")
+    if url_with_query.startswith("http://") or url_with_query.startswith("https://"):
+        goto_url = url_with_query
+    else:
+        goto_url = (PAGES_DIR / url_with_query.split("?")[0]).as_uri() + "?" + url_with_query.partition("?")[2]
+    page.goto(goto_url, wait_until="domcontentloaded")
     page.wait_for_timeout(wait_ms)
     return page
 
@@ -111,7 +116,7 @@ def check_behaviors(browser, results):
     context = new_context(browser, 1920, 1080)
 
     # --- main overlay: public API, postMessage, goal, scene ---
-    page = open_page(context, "overlay.html?bg=1&lower=0")
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/overlay.html?bg=1&lower=0")
     page.evaluate("window.overlay.alert('raid', 'quietstorm', '42 viewers')")
     page.wait_for_timeout(700)
     results.check("overlay: alert shows the username", page.inner_text("#alertName") == "quietstorm")
@@ -133,14 +138,14 @@ def check_behaviors(browser, results):
     results.check("overlay: no JavaScript errors", not page.page_errors, str(page.page_errors))
     page.close()
 
-    page = open_page(context, "overlay.html?bg=1&lower=0&goal=10")
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/overlay.html?bg=1&lower=0&goal=10")
     page.evaluate("window.overlay.alert('follow', 'Nova_Fox')")
     page.wait_for_timeout(500)
     results.check("overlay: a follow alert adds one to the goal", page.inner_text("#goalNum") == "11 / 100")
     page.close()
 
     # --- no-nameplate overlay still works and has no lower third ---
-    page = open_page(context, "overlay-noname.html?bg=1&goal=5")
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/overlay-noname.html?bg=1&goal=5")
     results.check("overlay-noname: has no nameplate", page.query_selector("#name") is None)
     page.evaluate("window.overlay.alert('tip', 'mx_halcyon', '$5'); window.overlay.lower(true); window.overlay.setLower('x', 'y');")
     page.wait_for_timeout(500)
@@ -149,47 +154,47 @@ def check_behaviors(browser, results):
     page.close()
 
     # --- URL parameters ---
-    page = open_page(context, "screenshare.html?pos=tl&name=Alex&title=Ranked%20grind")
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/screenshare.html?pos=tl&name=Alex&title=Ranked%20grind")
     body_classes = page.evaluate("document.body.className")
     results.check("screenshare: pos=tl moves the camera", "pos-tl" in body_classes and "pos-br" not in body_classes, body_classes)
     results.check("screenshare: name parameter", page.inner_text("#name") == "Alex")
     page.close()
 
-    page = open_page(context, "screenshare.html?cam=0")
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/screenshare.html?cam=0")
     results.check("screenshare: cam=0 hides the camera frame",
                   page.evaluate("getComputedStyle(document.querySelector('.cam')).display") == "none")
     page.close()
 
-    page = open_page(context, "screenshare-side.html?side=left")
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/screenshare-side.html?side=left")
     results.check("screenshare-side: side=left flips the sidebar",
                   page.evaluate("document.body.classList.contains('flip')"))
     page.close()
 
-    page = open_page(context, "ending.html?socials=twitter/you,youtube/you")
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/ending.html?socials=twitter/you,youtube/you")
     results.check("ending: socials become separate lines", page.inner_html("#socials").count("<br>") == 1)
     page.close()
 
-    page = open_page(context, "webcam.html?accent=FF4D8D")
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/webcam.html?accent=FF4D8D")
     accent = page.evaluate("getComputedStyle(document.documentElement).getPropertyValue('--accent').trim().toLowerCase()")
     results.check("webcam: accent parameter overrides the color", accent == "#ff4d8d", accent)
     page.close()
 
     # --- countdowns ---
-    page = open_page(context, "brb.html?minutes=2")
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/brb.html?minutes=2")
     results.check("brb: counts down when minutes is given", "Back in" in page.text_content("#count"))
     page.close()
 
-    page = open_page(context, "brb.html")
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/brb.html")
     results.check("brb: counts up when minutes is missing", "Away for" in page.text_content("#count"))
     page.close()
 
-    page = open_page(context, "starting.html?minutes=0.03", wait_ms=2600)
+    page = open_page(context, "http://127.0.0.1:8099/public/overlays/starting.html?minutes=0.03", wait_ms=2600)
     results.check("starting: switches to 'Going live' when the countdown ends",
                   "live" in page.inner_text("#title").lower(), page.inner_text("#title"))
     page.close()
 
     # --- stinger: the Browser Transition plugin events ---
-    page = open_page(context, "stinger.html")
+    page = open_page(context, "http://127.0.0.1:8099/public/transitions/stinger.html")
     is_visible = "getComputedStyle(document.getElementById('ink')).visibility"
     results.check("stinger: transparent before the plugin starts it", page.evaluate(is_visible) == "hidden")
     page.evaluate("""window.dispatchEvent(new CustomEvent('transitionStart',
@@ -210,15 +215,20 @@ def check_behaviors(browser, results):
 
 
 def main():
+    _server = subprocess.Popen([sys.executable, '-m', 'http.server', '8099', '--directory', str(REPO_ROOT)],
+                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    time.sleep(1)
     results = Results()
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         check_layout_at_every_size(browser, results)
         check_behaviors(browser, results)
         browser.close()
+    _server.terminate()
     print(f"\n{results.passed} checks passed, {len(results.failures)} failed")
     sys.exit(1 if results.failures else 0)
 
 
 if __name__ == "__main__":
     main()
+

@@ -31,7 +31,7 @@ the 1080 × 1920 layout. Both scale smoothly, so 2K and 4K look identical to 108
 | `screenshare.html` | Game or screen capture with a corner webcam and nameplate | transparent |
 | `screenshare-side.html` | Screen on one side, full-height webcam sidebar | transparent |
 | `overlay.html` | Alerts, follower goal, lower third and scene card | transparent |
-| `stinger.html` | Scene transition for the Browser Transition plugin | transparent |
+| `transitions/stinger.html` | Scene transition for the Browser Transition plugin | transparent |
 | `screenshare-noname.html`, `screenshare-side-noname.html`, `overlay-noname.html` | The same without the nameplate / lower third | transparent |
 
 Transparent pages sit **above** your sources. The webcam windows are hollow so the camera shows through.
@@ -115,10 +115,10 @@ inside the page (for example a StreamElements custom widget calling `window.over
 
 ## Stinger transition
 
-`stinger.html` is built for the [Browser Transition](https://obsproject.com/forum/resources/browser-transition.1653/) plugin.
+`transitions/stinger.html` is built for the [Browser Transition](https://obsproject.com/forum/resources/browser-transition.1653/) plugin.
 
 1. In OBS, add a **Browser Transition** under Scene Transitions.
-2. Point it at `stinger.html` (Local file), 1920 × 1080.
+2. Point it at `transitions/stinger.html` (Local file), 1920 × 1080.
 3. Duration about 1000–1400 ms, transition point 50%. Leave **Track matte** off.
 
 The page stays transparent until the plugin sends `transitionStart`. It wipes in, covers the screen at the
