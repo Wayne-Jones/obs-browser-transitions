@@ -7,3 +7,5 @@ transitions/node_modules/
 public/
 
 src/js/
+
+test-results/
