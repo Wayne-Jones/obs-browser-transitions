@@ -78,7 +78,7 @@ class Results:
             print("  FAIL:", description, detail)
 
 
-def open_page(browser_context, url_with_query, wait_ms=1200):
+def open_page(browser_context, url_with_query, wait_ms=2000):
     page = browser_context.new_page()
     page.page_errors = []
     page.on("pageerror", lambda error: page.page_errors.append(str(error)))
@@ -86,6 +86,7 @@ def open_page(browser_context, url_with_query, wait_ms=1200):
         goto_url = url_with_query
     else:
         goto_url = (PAGES_DIR / url_with_query.split("?")[0]).as_uri() + "?" + url_with_query.partition("?")[2]
+    page.goto(goto_url, wait_until="domcontentloaded")
     page.goto(goto_url, wait_until="domcontentloaded")
     page.wait_for_timeout(wait_ms)
     return page
