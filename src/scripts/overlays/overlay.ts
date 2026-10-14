@@ -1,14 +1,4 @@
-/* ============================================================
-   Main overlay: alerts, follower goal, lower third and scene card.
-   Uses the helpers from base.js (getById, urlParams, formatMinutesSeconds).
-
-   Control from outside the page:
-     window.overlay.alert('follow' | 'sub' | 'raid' | 'tip', username, detail)
-     window.overlay.setGoal(value, target)
-     window.overlay.lower(visible)           window.overlay.setLower(name, title)
-     window.overlay.scene('starting' | 'brb' | 'ending' | 'none', minutes)
-   The same actions work through postMessage; see handlePostMessage below.
-   ============================================================ */
+import { getById, urlParams, formatMinutesSeconds } from '../base.js';
 
 const ALERT_DISPLAY_MS = 5000;
 const ALERT_GAP_MS = 700;
@@ -19,44 +9,40 @@ const DEFAULT_SCENE_COUNTDOWN_MINUTES = 5;
 
 const ALERT_KINDS = {
   follow: { icon: '+', label: 'New follower' },
-  sub:    { icon: '★', label: 'New subscriber' },
-  raid:   { icon: '»', label: 'Incoming raid' },
-  tip:    { icon: '$', label: 'Tip' }
+  sub: { icon: '★', label: 'New subscriber' },
+  raid: { icon: '→', label: 'Incoming raid' },
+  tip: { icon: '$', label: 'Tip' }
 };
 
 const SCENES = {
-  starting: { kicker: 'Stream',    headlineMarkup: 'Starting <span class="highlight">soon</span>' },
-  brb:      { kicker: 'Take five', headlineMarkup: 'Be right <span class="highlight">back</span>' },
-  ending:   { kicker: 'Thank you', headlineMarkup: 'See you <span class="highlight">next time</span>' }
+  starting: { kicker: 'Stream', headlineMarkup: 'Starting <span class="highlight">soon</span>' },
+  brb: { kicker: 'Take five', headlineMarkup: 'Be right <span class="highlight">back</span>' },
+  ending: { kicker: 'Thank you', headlineMarkup: 'See you <span class="highlight">next time</span>' }
 };
 
-const alertElement = getById('alert');
-const alertIcon = getById('alertIcon');
-const alertLabel = getById('alertKind');
-const alertName = getById('alertName');
-const alertDetail = getById('alertSub');
+const alertElement = getById('alert') as HTMLElement;
+const alertIcon = getById('alertIcon') as HTMLElement;
+const alertLabel = getById('alertKind') as HTMLElement;
+const alertName = getById('alertName') as HTMLElement;
+const alertDetail = getById('alertSub') as HTMLElement;
 
-const goalElement = getById('goal');
-const goalCount = getById('goalNum');
-const goalFill = getById('fill');
+const goalElement = getById('goal') as HTMLElement;
+const goalCount = getById('goalNum') as HTMLElement;
+const goalFill = getById('fill') as HTMLElement;
 
-const lowerThird = getById('lower');        /* missing on the "no nameplate" page */
-const nameElement = getById('name');
-const titleElement = getById('title');
+const lowerThird = getById('lower') as HTMLElement | null;
+const nameElement = getById('name') as HTMLElement | null;
+const titleElement = getById('title') as HTMLElement | null;
 
-const sceneElement = getById('scene');
-const sceneKicker = getById('sceneKicker');
-const sceneHeadline = getById('sceneTitle');
-const sceneCountdown = getById('count');
-
-/* ---------- settings from the URL ---------- */
+const sceneElement = getById('scene') as HTMLElement;
+const sceneKicker = getById('sceneKicker') as HTMLElement;
+const sceneHeadline = getById('sceneTitle') as HTMLElement;
+const sceneCountdown = getById('count') as HTMLElement;
 
 if (nameElement) nameElement.textContent = urlParams.get('name') || 'Your Name';
-if (titleElement) titleElement.textContent = urlParams.get('title') || 'Playing • Talking • Making';
-getById('goalLabel').textContent = urlParams.get('goalLabel') || 'Follower goal';
+if (titleElement) titleElement.textContent = urlParams.get('title') || 'Playing · Talking · Making';
+(getById('goalLabel') as HTMLElement).textContent = urlParams.get('goalLabel') || 'Follower goal';
 if (urlParams.get('goal') === '0') goalElement.classList.add('off');
-
-/* ---------- follower goal ---------- */
 
 const startingGoal = Number(urlParams.get('goal'));
 let goalValue = startingGoal > 0 ? startingGoal : 0;
@@ -68,29 +54,26 @@ function renderGoal() {
   goalFill.style.width = percentComplete + '%';
 }
 
-function setGoal(value, target) {
+function setGoal(value: number, target?: number) {
   goalValue = value;
   if (target) goalTarget = target;
   renderGoal();
 }
 
-/* ---------- lower third ---------- */
-
-function setLowerThirdVisible(visible = !lowerThird?.classList.contains('on')) {
-  lowerThird?.classList.toggle('on', visible);
+function setLowerThirdVisible(visible?: boolean) {
+  const show = visible ?? !lowerThird?.classList.contains('on');
+  lowerThird?.classList.toggle('on', show);
 }
 
-function setLowerThirdText(name, title) {
+function setLowerThirdText(name?: string | null, title?: string | null) {
   if (name && nameElement) nameElement.textContent = name;
   if (title && titleElement) titleElement.textContent = title;
 }
 
-/* ---------- alerts (queued so they play one at a time) ---------- */
-
-const alertQueue = [];
+const alertQueue: Array<{ kind: string; username: string; detail: string }> = [];
 let isShowingAlert = false;
 
-function queueAlert(kind, username, detail = '') {
+function queueAlert(kind: string, username: string, detail = '') {
   alertQueue.push({ kind, username, detail });
   if (!isShowingAlert) showNextAlert();
 }
@@ -103,7 +86,7 @@ function showNextAlert() {
   }
   isShowingAlert = true;
 
-  const kindInfo = ALERT_KINDS[nextAlert.kind] || ALERT_KINDS.follow;
+  const kindInfo = ALERT_KINDS[nextAlert.kind as keyof typeof ALERT_KINDS] || ALERT_KINDS.follow;
   alertIcon.textContent = kindInfo.icon;
   alertLabel.textContent = kindInfo.label;
   alertName.textContent = nextAlert.username;
@@ -121,14 +104,12 @@ function showNextAlert() {
   }, ALERT_DISPLAY_MS);
 }
 
-/* ---------- scene card (starting / brb / ending) ---------- */
+let sceneCountdownTimer: any;
 
-let sceneCountdownTimer;
-
-function showScene(sceneName, countdownMinutes) {
+function showScene(sceneName: string, countdownMinutes: number) {
   clearInterval(sceneCountdownTimer);
 
-  const scene = SCENES[sceneName];
+  const scene = SCENES[sceneName as keyof typeof SCENES];
   if (!scene) {
     sceneElement.classList.remove('on');
     return;
@@ -151,9 +132,7 @@ function showScene(sceneName, countdownMinutes) {
   }
 }
 
-/* ---------- public API and postMessage ---------- */
-
-window.overlay = {
+(globalThis as any).overlay = {
   alert: queueAlert,
   lower: setLowerThirdVisible,
   scene: showScene,
@@ -161,12 +140,7 @@ window.overlay = {
   setLower: setLowerThirdText
 };
 
-/* postMessage examples:
-     { type: 'alert', kind: 'sub', name: 'pixelparade', sub: 'Tier 1 · 3 months' }
-     { type: 'goal',  value: 30, max: 50 }
-     { type: 'lower', name: 'Alex', title: 'Ranked grind', show: true }
-     { type: 'scene', name: 'brb', minutes: 5 } */
-function handlePostMessage(event) {
+function handlePostMessage(event: MessageEvent) {
   const message = event.data || {};
   switch (message.type) {
     case 'alert':
@@ -185,8 +159,6 @@ function handlePostMessage(event) {
   }
 }
 addEventListener('message', handlePostMessage);
-
-/* ---------- preview keys (only with ?bg=1 so they never fire inside OBS by accident) ---------- */
 
 function enablePreviewKeys() {
   const SAMPLE_USERNAMES = ['Nova_Fox', 'pixelparade', 'quietstorm', 'mx_halcyon'];
@@ -209,7 +181,7 @@ function enablePreviewKeys() {
       case '4': {
         sceneCycleIndex = (sceneCycleIndex + 1) % SCENE_CYCLE.length;
         const sceneName = SCENE_CYCLE[sceneCycleIndex];
-        showScene(sceneName, sceneName === 'starting' ? DEFAULT_SCENE_COUNTDOWN_MINUTES : 0);
+        showScene(sceneName as string, sceneName === 'starting' ? DEFAULT_SCENE_COUNTDOWN_MINUTES : 0);
         break;
       }
       case '5':
@@ -223,9 +195,7 @@ function enablePreviewKeys() {
   });
 }
 
-/* ---------- start ---------- */
-
 renderGoal();
 if (urlParams.get('lower') !== '0') setTimeout(() => setLowerThirdVisible(true), LOWER_THIRD_DELAY_MS);
-if (urlParams.get('scene')) showScene(urlParams.get('scene'), Number(urlParams.get('minutes')) || 0);
+if (urlParams.get('scene')) showScene(urlParams.get('scene')!, Number(urlParams.get('minutes')) || 0);
 if (urlParams.has('bg')) enablePreviewKeys();

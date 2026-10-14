@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Screenshare Scene Sidebar (no nameplate)</title>
+<title>Screenshare Scene (Sidebar)</title>
 <!--
 ============================================================
    SCREENSHARE scene, SIDEBAR variant  (OBS Browser Source, 1920x1080)
@@ -19,25 +19,24 @@
    Params: side=left, name, title, accent (hex without #), bg=1 (checkerboard preview)
    Portrait screens / a vertical 1080x1920 canvas switch to a vertical layout automatically.
 ============================================================
-   NO-NAMEPLATE variant. Desktop 1920x1080: webcam x=1464 y=156 432x768 (side=left: x=24); screen 1440x1080.
-   Vertical canvas 1080x1920: bottom bar, webcam (16:9) x=60 y=1333 960x540.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/screenshare-side.css">
-<link rel="stylesheet" href="css/screenshare-side-noname.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/screenshare-side.css">
 </head>
 <body>
 <div class="stage">
   <div class="sidebar">
     <div class="edge"></div>
     <div class="hole"><div class="cam-badge"><span class="dot"></span>Cam</div></div>
-
+    <div class="info">
+      <div class="bar"></div>
+      <div class="body panel"><h1 id="name">Your Name</h1><p id="title">Playing • Talking • Making</p></div>
+    </div>
   </div>
 </div>
 <div class="hint">Params: ?side=left&amp;name=Alex&amp;title=Ranked%20grind · bg=1 for checkerboard</div>
-<script src="js/base.js"></script>
-<script src="js/screenshare-side.js"></script>
+<script type="module" src="../js/overlays/screenshare-side.js"></script>
 </body>
 </html>

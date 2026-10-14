@@ -1,4 +1,4 @@
-/* Webcam scene: hollow camera frame with a nameplate. */
+import { getById, urlParams } from '../base.js';
 
 if (urlParams.has('solid')) document.body.classList.add('solid');
 

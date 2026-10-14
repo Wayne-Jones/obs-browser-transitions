@@ -3,20 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stream Overlay</title>
+<title>Stream Overlay (no nameplate)</title>
 <!--
 ============================================================
    OBS BROWSER SOURCE
    Size: 1920x1080 (any 16:9 works, everything scales with 1rem = 1/100 of stage width)
    Background is transparent. Add ?bg=1 to preview on a checkerboard.
-   Params: name, title, accent, goal, goalMax, goalLabel,
-           scene (starting|brb|ending), minutes, lower=0|1
+   Params: accent, goal, goalMax, goalLabel,
+           scene (starting|brb|ending), minutes
    Portrait screens / a vertical 1080x1920 canvas switch to a vertical layout automatically.
 ============================================================
+   NO-NAMEPLATE variant: alerts, goal bar and scene card only (no lower third).
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/overlay.css">
+<link rel="stylesheet" href="../css/overlay.css">
+<link rel="stylesheet" href="../css/overlay-noname.css">
 </head>
 <body>
 <div class="stage" id="stage">
@@ -30,13 +32,6 @@
     </div>
   </div>
 
-  <div class="lower" id="lower">
-    <div class="bar"></div>
-    <div class="body panel">
-      <h1 id="name">Your Name</h1>
-      <p id="title">Playing • Talking • Making</p>
-    </div>
-  </div>
 
   <div class="goal panel" id="goal">
     <div class="row"><span id="goalLabel">Follower goal</span><b id="goalNum">0 / 100</b></div>
@@ -52,7 +47,6 @@
   </div>
 </div>
 <div class="hint">Preview keys: 1 follow · 2 sub · 3 lower third · 4 scene · 5 goal +1 · 6 toggle goal</div>
-<script src="js/base.js"></script>
-<script src="js/overlay.js"></script>
+<script type="module" src="../js/overlays/overlay.js"></script>
 </body>
 </html>

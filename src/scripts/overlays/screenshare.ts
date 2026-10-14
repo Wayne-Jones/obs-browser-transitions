@@ -1,11 +1,10 @@
-/* Screenshare scene: small camera frame in a corner plus a nameplate.
-   Corner codes: br = bottom right, bl = bottom left, tr = top right, tl = top left. */
+import { getById, urlParams } from '../base.js';
 
 const CAMERA_CORNERS = ['br', 'bl', 'tr', 'tl'];
 const DEFAULT_CAMERA_CORNER = 'br';
 
 const requestedCorner = urlParams.get('pos');
-const cameraCorner = CAMERA_CORNERS.includes(requestedCorner) ? requestedCorner : DEFAULT_CAMERA_CORNER;
+const cameraCorner = CAMERA_CORNERS.includes(requestedCorner ?? '') ? (requestedCorner as string) : DEFAULT_CAMERA_CORNER;
 CAMERA_CORNERS.forEach(corner => document.body.classList.remove('pos-' + corner));
 document.body.classList.add('pos-' + cameraCorner);
 

@@ -1,14 +1,14 @@
-/* Be Right Back scene: counts down ("Back in") if ?minutes is given, otherwise counts up ("Away for"). */
+import { getById, urlParams, fillMarquee, formatMinutesSeconds } from '../base.js';
 
 const TIMER_REFRESH_MS = 500;
 
-const message = getById('msg');
-const countdown = getById('count');
+const message = getById('msg') as HTMLElement;
+const countdown = getById('count') as HTMLElement;
 
 if (urlParams.get('msg')) message.textContent = urlParams.get('msg');
 fillMarquee(['Be right back', urlParams.get('channel') || 'yourchannel', 'Chat among yourselves', 'Back shortly']);
 
-function startCountdown(minutes) {
+function startCountdown(minutes: number) {
   const endTime = Date.now() + minutes * 60000;
 
   function updateCountdown() {

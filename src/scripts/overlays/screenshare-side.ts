@@ -1,4 +1,4 @@
-/* Screenshare sidebar scene: camera sidebar on the right, or on the left with ?side=left. */
+import { getById, urlParams } from '../base.js';
 
 if (urlParams.get('side') === 'left') document.body.classList.add('flip');
 

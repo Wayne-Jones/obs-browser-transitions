@@ -1,37 +1,34 @@
+import { getById, urlParams } from '../base.js';
 /* ============================================================
    Stinger transition for the "Browser Transition" OBS plugin.
-
-   The plugin fires `transitionStart` with { duration, transitionPoint, ... }.
-   The page stays fully transparent until then. It wipes in, fully covers the
-   screen at the transition point (that is when OBS swaps scenes), then wipes out.
    ============================================================ */
 
 const DEFAULT_DURATION_MS = 1200;
-const DEFAULT_TRANSITION_POINT = 0.5;      /* 0..1: how far through the transition the scenes swap */
-const STRIPE_WIDTH = 0.06;                 /* gradient stripe width as a fraction of the screen */
-const LABEL_FADE_IN = 0.1;                 /* label timing, as fractions of the whole transition */
+const DEFAULT_TRANSITION_POINT = 0.5;
+const STRIPE_WIDTH = 0.06;
+const LABEL_FADE_IN = 0.1;
 const LABEL_HOLD = 0.03;
 const LABEL_FADE_OUT = 0.12;
 const PREVIEW_START_DELAY_MS = 400;
 const PREVIEW_PAUSE_MS = 2200;
 
-const gradientStripe = getById('accent-layer');
-const inkPanel = getById('ink');
-const centerLabel = getById('midpoint-message');
-const centerLabelContent = getById('message-content');
-const centerWord = getById('word');
+const gradientStripe: HTMLElement | null = getById('accent-layer');
+const inkPanel: HTMLElement | null = getById('ink');
+const centerLabel: HTMLElement | null = getById('midpoint-message');
+const centerLabelContent: HTMLElement | null = getById('message-content');
+const centerWord: HTMLElement | null = getById('word');
 
 let animationFrameId = 0;
 let animationStartTime = 0;
 let durationMs = DEFAULT_DURATION_MS;
 let transitionPoint = DEFAULT_TRANSITION_POINT;
 
-/* ?word=Be right back puts the last word in the highlighted block. */
-function applyCenterWord() {
+function applyCenterWord(): void {
+  if (!centerWord) return;
   const wordParam = urlParams.get('word');
   if (!wordParam || !wordParam.trim()) return;
   const words = wordParam.trim().split(/\s+/);
-  const highlightedWord = words.pop();
+  const highlightedWord = words.pop() as string;
   const highlight = document.createElement('span');
   highlight.className = 'highlight';
   highlight.textContent = highlightedWord;
@@ -39,40 +36,34 @@ function applyCenterWord() {
   centerWord.appendChild(highlight);
 }
 
-/* ---------- easing helpers ---------- */
+const clampToUnitRange = (value: number): number => Math.max(0, Math.min(1, value));
 
-const clampToUnitRange = value => Math.max(0, Math.min(1, value));
-
-function easeInOutCubic(progress) {
+function easeInOutCubic(progress: number): number {
   if (progress < 0.5) return 4 * progress * progress * progress;
   return 1 - Math.pow(-2 * progress + 2, 3) / 2;
 }
 
-function smoothStep(value) {
+function smoothStep(value: number): number {
   const clamped = clampToUnitRange(value);
   return clamped * clamped * (3 - 2 * clamped);
 }
 
-/* Shows only the horizontal slice of a layer between two fractions of the screen width. */
-function showHorizontalSlice(layer, leftFraction, rightFraction) {
+function showHorizontalSlice(layer: HTMLElement | null, leftFraction: number, rightFraction: number): void {
+  if (!layer) return;
   const insetRightPercent = (1 - rightFraction) * 100;
   const insetLeftPercent = leftFraction * 100;
   layer.style.clipPath = `inset(0 ${insetRightPercent}% 0 ${insetLeftPercent}%)`;
 }
 
-/* ---------- animation ---------- */
-
-/* `progress` runs from 0 (start) to 1 (end) over the whole transition. */
-function renderFrame(progress) {
+function renderFrame(progress: number): void {
+  if (!inkPanel || !gradientStripe) return;
   let inkLeft = 0, inkRight = 0, stripeLeft = 0, stripeRight = 0;
 
   if (progress <= transitionPoint) {
-    /* Wipe in: the gradient stripe leads and the ink panel follows. */
     const wipe = easeInOutCubic(progress / transitionPoint);
     inkRight = wipe;
     stripeRight = Math.min(1, wipe + STRIPE_WIDTH * Math.min(1, wipe * 10));
   } else {
-    /* Wipe out: the ink panel leaves first and the stripe trails behind it. */
     const wipe = easeInOutCubic((progress - transitionPoint) / (1 - transitionPoint)) * (1 + STRIPE_WIDTH);
     inkLeft = Math.min(1, wipe);
     inkRight = 1;
@@ -86,17 +77,17 @@ function renderFrame(progress) {
   const fadeIn = smoothStep((progress - (transitionPoint - LABEL_FADE_IN)) / LABEL_FADE_IN);
   const fadeOut = smoothStep((progress - (transitionPoint + LABEL_HOLD)) / LABEL_FADE_OUT);
   const labelOpacity = fadeIn * (1 - fadeOut);
-  centerLabel.style.opacity = labelOpacity;
-  centerLabelContent.style.transform = `translateY(${1 - labelOpacity}rem)`;
+  if (centerLabel) centerLabel.style.opacity = String(labelOpacity);
+  if (centerLabelContent) centerLabelContent.style.transform = `translateY(${1 - labelOpacity}rem)`;
 }
 
-function hideLayers() {
-  gradientStripe.style.visibility = 'hidden';
-  inkPanel.style.visibility = 'hidden';
-  centerLabel.style.opacity = 0;
+function hideLayers(): void {
+  if (gradientStripe) gradientStripe.style.visibility = 'hidden';
+  if (inkPanel) inkPanel.style.visibility = 'hidden';
+  if (centerLabel) centerLabel.style.opacity = '0';
 }
 
-function onAnimationFrame(now) {
+function onAnimationFrame(now: number): void {
   const progress = Math.min(1, (now - animationStartTime) / durationMs);
   renderFrame(progress);
   if (progress < 1) {
@@ -106,29 +97,26 @@ function onAnimationFrame(now) {
   }
 }
 
-function playTransition(requestedDurationMs, requestedTransitionPoint) {
+function playTransition(requestedDurationMs: number, requestedTransitionPoint: number): void {
   cancelAnimationFrame(animationFrameId);
   durationMs = requestedDurationMs > 50 ? requestedDurationMs : DEFAULT_DURATION_MS;
   const isValidPoint = requestedTransitionPoint > 0.05 && requestedTransitionPoint < 0.95;
   transitionPoint = isValidPoint ? requestedTransitionPoint : DEFAULT_TRANSITION_POINT;
 
-  gradientStripe.style.visibility = 'visible';
-  inkPanel.style.visibility = 'visible';
+  if (gradientStripe) gradientStripe.style.visibility = 'visible';
+  if (inkPanel) inkPanel.style.visibility = 'visible';
   renderFrame(0);
   animationStartTime = performance.now();
   animationFrameId = requestAnimationFrame(onAnimationFrame);
 }
 
-function stopTransition() {
+function stopTransition(): void {
   cancelAnimationFrame(animationFrameId);
   hideLayers();
 }
 
-/* ---------- Browser Transition plugin events ---------- */
-
-/* Event details may arrive as an object or as a JSON string, depending on the plugin version. */
-function readEventDetail(event) {
-  let detail = event && event.detail;
+function readEventDetail(event: Event): Record<string, unknown> {
+  let detail: any = (event as CustomEvent).detail;
   if (typeof detail === 'string') {
     try {
       detail = JSON.parse(detail);
@@ -136,18 +124,17 @@ function readEventDetail(event) {
       detail = {};
     }
   }
-  return detail || {};
+  return (detail || {}) as Record<string, unknown>;
 }
 
-window.addEventListener('transitionStart', event => {
+window.addEventListener('transitionStart', (event: Event) => {
   const detail = readEventDetail(event);
   playTransition(Number(detail.duration), Number(detail.transitionPoint));
 });
 
 window.addEventListener('transitionStop', stopTransition);
 
-/* Older plugin builds only send an "active" flag with no duration, so fall back to the defaults. */
-window.addEventListener('obsSourceActiveChanged', event => {
+window.addEventListener('obsSourceActiveChanged', (event: Event) => {
   const detail = readEventDetail(event);
   if (detail.active) {
     playTransition(
@@ -159,13 +146,10 @@ window.addEventListener('obsSourceActiveChanged', event => {
   }
 });
 
-/* ---------- preview mode (open in a normal browser with ?bg=1) ---------- */
-
-function startPreviewLoop() {
+function startPreviewLoop(): void {
   const previewDurationMs = Number(urlParams.get('duration')) || DEFAULT_DURATION_MS;
   const previewTransitionPoint = Number(urlParams.get('tp')) || DEFAULT_TRANSITION_POINT;
-  const replay = () => playTransition(previewDurationMs, previewTransitionPoint);
-
+  const replay = (): void => playTransition(previewDurationMs, previewTransitionPoint);
   setTimeout(replay, PREVIEW_START_DELAY_MS);
   setInterval(replay, previewDurationMs + PREVIEW_PAUSE_MS);
   addEventListener('click', replay);

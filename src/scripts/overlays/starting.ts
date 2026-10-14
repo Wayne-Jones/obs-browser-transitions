@@ -1,23 +1,24 @@
-/* Starting Soon scene: headline, "Live in" countdown with progress bar, and "Up next" line. */
+import { getById, urlParams, fillMarquee, formatMinutesSeconds } from '../base.js';
 
 const DEFAULT_COUNTDOWN_MINUTES = 5;
 const COUNTDOWN_REFRESH_MS = 500;
 
-const headline = getById('title');
-const message = getById('msg');
-const countdown = getById('count');
-const progressTrack = getById('track');
-const progressFill = getById('fill');
+const headline = getById('title') as HTMLElement;
+const message = getById('msg') as HTMLElement;
+const countdown = getById('count') as HTMLElement;
+const progressTrack = getById('track') as HTMLElement;
+const progressFill = getById('fill') as HTMLElement;
 
-getById('kicker').textContent = urlParams.get('kicker') || 'Stream';
-getById('next').textContent = urlParams.get('next') || 'Just chatting';
+headline.textContent = '';
+getById('kicker')!.textContent = urlParams.get('kicker') || 'Stream';
+(getById('next') as HTMLElement).textContent = urlParams.get('next') || 'Just chatting';
 if (urlParams.get('msg')) {
   message.textContent = urlParams.get('msg');
   message.hidden = false;
 }
 fillMarquee(['Starting soon', urlParams.get('channel') || 'yourchannel', 'Grab a drink', 'Say hi in chat']);
 
-function startCountdown(minutes) {
+function startCountdown(minutes: number) {
   const totalMs = minutes * 60000;
   const endTime = Date.now() + totalMs;
 
@@ -41,7 +42,7 @@ function startCountdown(minutes) {
   updateCountdown();
 }
 
-const countdownMinutes = parseFloat(urlParams.get('minutes') ?? DEFAULT_COUNTDOWN_MINUTES);
+const countdownMinutes = parseFloat(urlParams.get('minutes') ?? String(DEFAULT_COUNTDOWN_MINUTES));
 if (countdownMinutes > 0) {
   startCountdown(countdownMinutes);
 } else {
