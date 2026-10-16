@@ -4,8 +4,8 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "lib": ["ESNext", "DOM"],
-    "rootDir": "src/scripts",
-    "outDir": "public/js",
+    "rootDir": ".",
+    "noEmit": true,
     "strict": true,
     "noEmitOnError": true,
     "skipLibCheck": true,
@@ -16,7 +16,9 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "useUnknownInCatchVariables": true
+    "useUnknownInCatchVariables": true,
+    "types": ["node"]
   },
-  "include": ["src/scripts/**/*.ts"]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "public"]
 }

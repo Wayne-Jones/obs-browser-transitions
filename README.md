@@ -169,8 +169,8 @@ types/           ambient browser-global declarations shared by the tests and too
 scripts/         build + preview tooling (build.ts, previews.ts)
 ```
 
-`tsconfig.json` drives the build (`src/scripts` → `public/js`); `tsconfig.test.json` type-checks the tests and
-tooling without emitting anything.
+`tsconfig.json` type-checks every `.ts`/`.tsx` file in the project without emitting anything (this is also the
+project the editor uses); `tsconfig.build.json` extends it to compile `src/scripts` into `public/js`.
 
 Colors and spacing live in `src/css/base.css`; the colors are the CSS variables at the top
 (`--flag-magenta`, `--flag-purple`, `--flag-blue`). One `rem` equals 1% of the screen width on a landscape
@@ -181,7 +181,7 @@ screen, so everything scales together.
 ```
 pnpm install
 pnpm build      # compiles src/scripts to public/js and copies css + html into public/
-pnpm typecheck  # type-checks the Playwright tests and build tooling (emits nothing)
+pnpm typecheck  # type-checks every .ts/.tsx file (emits nothing)
 pnpm test       # builds, type-checks, then runs the Playwright checks against public/
 pnpm previews   # builds, then regenerates the preview images in docs/
 ```

@@ -16,7 +16,7 @@ rmSync(publicDir, { recursive: true, force: true });
 // Make the locally installed `tsc` findable even when this is run directly
 // (`node scripts/build.ts`) rather than through pnpm.
 const binDir = resolve('node_modules', '.bin');
-execSync('tsc -p .', {
+execSync('tsc -p tsconfig.build.json', {
   stdio: 'inherit',
   env: { ...process.env, PATH: `${binDir}${delimiter}${process.env.PATH ?? ''}` },
 });

@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "node scripts/build.ts",
-    "typecheck": "tsc -p tsconfig.test.json",
+    "typecheck": "tsc -p .",
     "test": "pnpm build && pnpm typecheck && playwright test",
     "previews": "pnpm build && node scripts/previews.ts"
   },
