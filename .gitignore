@@ -1,11 +1,10 @@
-__pycache__/
-*.pyc
 .DS_Store
 node_modules/
-transitions/node_modules/
 *.log
+
+# build output
 public/
 
-src/js/
-
+# test output
 test-results/
+playwright-report/

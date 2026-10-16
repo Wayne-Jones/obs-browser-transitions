@@ -165,7 +165,7 @@ function enablePreviewKeys() {
   const SCENE_CYCLE = [null, 'starting', 'brb', 'ending'];
   let sceneCycleIndex = 0;
 
-  const pickRandomUsername = () => SAMPLE_USERNAMES[Math.floor(Math.random() * SAMPLE_USERNAMES.length)];
+  const pickRandomUsername = () => SAMPLE_USERNAMES[Math.floor(Math.random() * SAMPLE_USERNAMES.length)]!;
 
   addEventListener('keydown', event => {
     switch (event.key) {
