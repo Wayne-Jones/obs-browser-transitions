@@ -67,7 +67,8 @@ function createStaticServer(): Server {
 
   return createServer((request, response) => {
     const { pathname } = new URL(request.url ?? '/', 'http://127.0.0.1');
-    const filePath = normalize(join(root, decodeURIComponent(pathname)));
+    const requested = normalize(join(root, decodeURIComponent(pathname)));
+    const filePath = pathname.endsWith('/') ? join(requested, 'index.html') : requested;
 
     // Prevent path traversal outside the served root.
     if (filePath !== root && !filePath.startsWith(root + sep)) {
@@ -215,4 +216,49 @@ test.describe('stinger transitions', () => {
       await expect(ink).toHaveCSS('visibility', 'hidden');
     });
   }
+});
+
+test.describe('landing page', () => {
+  // The href on each card, relative to public/ (the maps use rooted URLs).
+  const PAGE_HREFS = [
+    ...Object.values(OVERLAY_PAGES).map((path) => (path.split('?')[0] ?? '').replace(/^\//, '')),
+    ...Object.values(STINGER_PAGES).map(({ path }) => path.replace(/^\//, '')),
+  ];
+
+  test('serves the index and links every page', async ({ page, appURL }) => {
+    const response = await page.goto(`${appURL}/`);
+    expect(response?.ok(), `index responded with ${response?.status()}`).toBe(true);
+
+    const hrefs = await page
+      .locator('a.page-link')
+      .evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute('href')));
+
+    for (const href of PAGE_HREFS) expect(hrefs).toContain(href);
+  });
+
+  test('builds a query string, adds custom params and opens the page', async ({ page, appURL }) => {
+    await page.goto(`${appURL}/`);
+    const card = page.locator('.card[data-page="overlay"]');
+
+    await card.locator('summary').click();
+    await card.locator('[data-opt="goal"]').fill('42');
+
+    // The URL preview and the Open link track the controls; bg=1 is on by default.
+    await expect(card.locator('.url')).toContainText('goal=42');
+    await expect(card.locator('.url')).toContainText('bg=1');
+    await expect(card.locator('a.open-link')).toHaveAttribute('href', /goal=42/);
+
+    // A hand-written key/value pair joins the query and shows as a removable chip.
+    await card.locator('.custom-key').fill('foo');
+    await card.locator('.custom-value').fill('bar');
+    await card.locator('.custom-add').click();
+    await expect(card.locator('.url')).toContainText('foo=bar');
+    await expect(card.locator('.param-chip')).toHaveCount(1);
+
+    // Following the generated link really does configure the page.
+    const href = await card.locator('a.open-link').getAttribute('href');
+    const response = await page.goto(`${appURL}/${href}`);
+    expect(response?.ok(), `overlay responded with ${response?.status()}`).toBe(true);
+    await expect(page.locator('#goalNum')).toHaveText('42 / 100');
+  });
 });

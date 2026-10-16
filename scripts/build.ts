@@ -25,4 +25,7 @@ for (const asset of staticAssets) {
   cpSync(resolve('src', asset), resolve(publicDir, asset), { recursive: true });
 }
 
-console.log(`Built public/ (js + ${staticAssets.join(', ')})`);
+// The landing page sits at the root of the output.
+cpSync(resolve('src', 'index.html'), resolve(publicDir, 'index.html'));
+
+console.log(`Built public/ (index + js + ${staticAssets.join(', ')})`);

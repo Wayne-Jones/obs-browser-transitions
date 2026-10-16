@@ -1,0 +1,106 @@
+/* ============================================================
+   Landing page.
+
+   Loaded after base.css, so it reuses the shared colour tokens,
+   fonts and the .btn/.highlight/.kicker helpers. Everything that
+   made sense only for a fixed OBS stage (the rem sizing and the
+   clipped viewport) is reset for a normal scrolling document.
+   ============================================================ */
+
+:root{font-size:clamp(15px,.5vw + 11px,18px)}
+
+html,body{height:auto;min-height:100%;overflow:visible}
+body.landing{
+  background:var(--ink);
+  background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.5px);
+  background-size:1.6rem 1.6rem;
+  padding:clamp(1.6rem,4vw,4rem) clamp(1rem,5vw,5rem) 4rem;
+}
+
+/* ---------- masthead ---------- */
+.masthead{max-width:60rem}
+.masthead .kicker{font-size:.85rem}
+.masthead h1{font-size:clamp(2.1rem,5.5vw,3.6rem);line-height:1;letter-spacing:-.03em;margin-top:.7rem;font-weight:700}
+.highlight{display:inline-block;background:var(--gradient-horizontal);color:var(--on-accent);padding:0 .3em;line-height:1.05}
+.masthead .lede{color:var(--muted);max-width:52rem;margin-top:1.1rem;line-height:1.6}
+.masthead .lede b{color:var(--text);font-weight:500}
+
+code{font-family:'Space Mono',monospace;font-size:.9em;background:rgba(255,255,255,.06);border-radius:.25rem;padding:.05rem .35rem;color:var(--text)}
+
+/* ---------- sections ---------- */
+.sections{margin-top:clamp(2rem,5vw,3.5rem);display:flex;flex-direction:column;gap:clamp(2.4rem,5vw,4rem)}
+.group-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.4rem 1rem;border-bottom:1px solid var(--line);padding-bottom:.7rem}
+.group-head h2{font-size:1rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-text);font-weight:500}
+.group-head p{color:var(--muted);font-size:.9rem}
+.group-head a{color:var(--accent-text)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(21rem,1fr));gap:1.1rem;margin-top:1.4rem;align-items:start}
+
+/* ---------- cards ---------- */
+.card{
+  position:relative;display:flex;flex-direction:column;gap:.55rem;
+  background:var(--ink-raised);border:1px solid var(--line);border-radius:.6rem;
+  padding:1.1rem 1.2rem 1.3rem;overflow:hidden;
+}
+.card::before{content:'';position:absolute;inset:0 0 auto;height:.22rem;background:var(--gradient-horizontal)}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-top:.2rem}
+.card-head h3{font-size:1.1rem;font-weight:700;letter-spacing:-.01em}
+.page-link{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.06em;color:var(--accent-text);text-decoration:none;flex:none}
+.page-link:hover{text-decoration:underline}
+.card-desc{color:var(--muted);font-size:.88rem;line-height:1.5}
+
+/* ---------- customize disclosure ---------- */
+.customize{margin-top:.5rem}
+summary.btn{width:max-content}
+summary{list-style:none;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+summary::before{content:'▸ ';color:var(--muted)}
+details[open]>summary::before{content:'▾ '}
+
+/* ---------- option grid ---------- */
+.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));gap:.65rem .8rem;margin:.9rem 0 .4rem}
+.opt{display:flex;flex-direction:column;gap:.25rem;min-width:0;
+  font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.opt-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.opt input[type=text],.opt input[type=number],.opt select,.custom input{
+  width:100%;min-width:0;font-family:'Space Mono',monospace;font-size:.8rem;color:var(--text);
+  background:var(--ink);border:1px solid var(--line);border-radius:.35rem;padding:.42rem .5rem;
+}
+.opt input:focus,.custom input:focus,.opt select:focus{outline:none;border-color:var(--accent-text)}
+.opt input::placeholder,.custom input::placeholder{color:#5f5f68}
+.opt-flag{grid-column:1/-1;flex-direction:row;align-items:center;gap:.55rem;text-transform:none;letter-spacing:0;font-size:.78rem;color:var(--text)}
+.opt-flag input[type=checkbox]{width:1rem;height:1rem;accent-color:var(--accent-text);flex:none}
+.swatch{width:1.9rem;height:1.7rem;padding:0;border:1px solid var(--line);border-radius:.3rem;background:var(--ink);flex:none}
+
+/* ---------- custom params ---------- */
+.custom{display:flex;gap:.4rem;margin-top:.55rem}
+.custom input{flex:1 1 4rem;text-transform:none}
+.custom-add{flex:none}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.chips:empty{display:none}
+.param-chip{display:inline-flex;align-items:center;gap:.35rem;font-family:'Space Mono',monospace;font-size:.72rem;
+  background:var(--ink);border:1px solid var(--line);border-radius:1rem;padding:.2rem .35rem .2rem .6rem;color:var(--muted)}
+.chip-remove{border:0;background:none;color:var(--muted);font-size:.85rem;line-height:1;cursor:pointer;padding:.1rem .2rem}
+.chip-remove:hover{color:var(--accent-text)}
+
+/* ---------- url bar ---------- */
+.urlbar{display:flex;gap:.5rem;align-items:stretch;margin-top:.6rem}
+.url{flex:1 1 auto;min-width:0;display:flex;align-items:center;background:#0a0a0b;border:1px solid var(--line);
+  border-radius:.35rem;padding:.45rem .55rem;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted);
+  overflow-wrap:anywhere}
+.open-link,.copy{flex:none}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.35rem;
+  font-family:'Space Mono',monospace;font-size:.78rem;line-height:1;color:var(--text);text-decoration:none;
+  background:var(--ink);border:1px solid var(--line);border-radius:.35rem;padding:.5rem .7rem;cursor:pointer;
+  transition:border-color .15s,color .15s}
+.btn:hover{border-color:var(--accent-text)}
+.btn.primary{background:var(--gradient-horizontal);border-color:transparent;color:var(--on-accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:none;color:var(--accent-text);border-color:var(--line)}
+.btn.ghost:hover{color:#fff;border-color:var(--accent-text)}
+
+/* ---------- footer ---------- */
+.foot{margin-top:clamp(2.5rem,6vw,4rem);border-top:1px solid var(--line);padding-top:1.2rem;
+  color:var(--muted);font-size:.85rem;line-height:1.6;max-width:52rem}

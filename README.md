@@ -18,7 +18,18 @@ static pages into `public/`, which is what you open in OBS (or deploy).
 4. Add options to the end of the page address, for example
    `starting.html?minutes=10&next=Ranked%20grind&channel=mychannel`.
 
+`public/index.html` is a landing page that links to every page and builds the option query strings for you.
 The pages use Google Fonts (Space Grotesk and Space Mono). Without an internet connection they fall back to system fonts.
+
+## Landing page
+
+Open `public/index.html` for an index of every overlay and transition. Each card links to its page, and
+**Customize options** turns that page's parameters into form fields — edit a field and the URL preview and the
+**Open** link update live. **add** appends any extra `key=value` pair, so parameters this page does not list
+(or ones added later) still work, and **copy** puts the full address on the clipboard.
+
+Transparent pages start with `bg=1` so the preview shows the checkerboard; untick it for the address you paste
+into OBS.
 
 ## The pages
 
@@ -158,6 +169,7 @@ Add `?bg=1` to preview any stinger in a normal browser; it loops and replays on 
 
 ```
 src/             sources
+  index.html     landing page linking to every overlay and transition
   overlays/      page HTML
   transitions/   stinger HTML
   css/           base.css (shared) plus one stylesheet per page
@@ -168,6 +180,8 @@ tests/           Playwright page checks
 types/           ambient browser-global declarations shared by the tests and tooling
 scripts/         build + preview tooling (build.ts, previews.ts)
 ```
+
+`scripts/index.ts` renders the landing page's option controls, and `css/index.css` styles it.
 
 `tsconfig.json` type-checks every `.ts`/`.tsx` file in the project without emitting anything (this is also the
 project the editor uses); `tsconfig.build.json` extends it to compile `src/scripts` into `public/js`.
