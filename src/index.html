@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OBS overlays &amp; transitions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body class="landing">
+
+<header class="masthead">
+  <p class="kicker">OBS browser sources</p>
+  <h1>Overlays &amp; <span class="highlight">transitions</span></h1>
+  <p class="lede">
+    Every page below is a browser source. <b>Open</b> one to preview it here, or open
+    <b>Customize options</b> to fill in a page's settings and copy the finished address into OBS.
+    Transparent pages use <code>bg=1</code> for a checkerboard preview.
+  </p>
+</header>
+
+<main class="sections">
+
+  <section class="group">
+    <div class="group-head">
+      <h2>Overlays</h2>
+      <p>Full scenes, frames and HUD elements. Add <code>?bg=1</code> to preview transparent pages.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card" data-page="starting">
+        <div class="card-head">
+          <h3>Starting soon</h3>
+          <a class="page-link" href="overlays/starting.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Countdown, up-next and a scrolling marquee on the solid backdrop.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="brb">
+        <div class="card-head">
+          <h3>Be right back</h3>
+          <a class="page-link" href="overlays/brb.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Counts down with <code>minutes</code>, or counts up if you leave it empty.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="ending">
+        <div class="card-head">
+          <h3>Stream ending</h3>
+          <a class="page-link" href="overlays/ending.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Sign-off with the next stream time and your social links.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="webcam">
+        <div class="card-head">
+          <h3>Webcam frame</h3>
+          <a class="page-link" href="overlays/webcam.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Hollow webcam frame with a nameplate. Layer it above your camera.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="screenshare">
+        <div class="card-head">
+          <h3>Screenshare</h3>
+          <a class="page-link" href="overlays/screenshare.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Screen capture with a corner webcam and nameplate.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="screenshare-noname">
+        <div class="card-head">
+          <h3>Screenshare, no nameplate</h3>
+          <a class="page-link" href="overlays/screenshare-noname.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">The corner webcam layout without the nameplate.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="screenshare-side">
+        <div class="card-head">
+          <h3>Screenshare sidebar</h3>
+          <a class="page-link" href="overlays/screenshare-side.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Screen on one side, full-height webcam sidebar on the other.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="screenshare-side-noname">
+        <div class="card-head">
+          <h3>Screenshare sidebar, no nameplate</h3>
+          <a class="page-link" href="overlays/screenshare-side-noname.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">The sidebar layout without the nameplate.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="overlay">
+        <div class="card-head">
+          <h3>Alerts &amp; HUD</h3>
+          <a class="page-link" href="overlays/overlay.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Alerts, follower goal, lower third and scene cards. Press 1–6 to test.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="overlay-noname">
+        <div class="card-head">
+          <h3>Alerts &amp; HUD, no lower third</h3>
+          <a class="page-link" href="overlays/overlay-noname.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Alerts, goal and scene card only.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-head">
+      <h2>Transitions</h2>
+      <p>Stinger pages for the OBS <a href="https://obsproject.com/forum/resources/browser-transition.1653/" target="_blank" rel="noopener">Browser Transition</a> plugin. Each adds <code>bg=1</code> to loop in a browser.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card" data-page="stinger">
+        <div class="card-head">
+          <h3>Stinger</h3>
+          <a class="page-link" href="transitions/stinger.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Left-to-right sweep.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="stinger-vertical">
+        <div class="card-head">
+          <h3>Stinger &middot; vertical</h3>
+          <a class="page-link" href="transitions/stinger-vertical.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Top-to-bottom sweep.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="stinger-diagonal">
+        <div class="card-head">
+          <h3>Stinger &middot; diagonal</h3>
+          <a class="page-link" href="transitions/stinger-diagonal.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Sweep skewed 18&deg;.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="stinger-diamond">
+        <div class="card-head">
+          <h3>Stinger &middot; diamond</h3>
+          <a class="page-link" href="transitions/stinger-diamond.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Sweep rotated 45&deg; and enlarged.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="stinger-radial">
+        <div class="card-head">
+          <h3>Stinger &middot; radial</h3>
+          <a class="page-link" href="transitions/stinger-radial.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Circle expanding from the centre.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="stinger-iris">
+        <div class="card-head">
+          <h3>Stinger &middot; iris</h3>
+          <a class="page-link" href="transitions/stinger-iris.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Symmetric open from the middle outwards.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+
+      <article class="card" data-page="stinger-stepped">
+        <div class="card-head">
+          <h3>Stinger &middot; stepped</h3>
+          <a class="page-link" href="transitions/stinger-stepped.html" target="_blank" rel="noopener">open</a>
+        </div>
+        <p class="card-desc">Sweep snapped to 12 visible steps.</p>
+        <details class="customize"><summary class="btn ghost">Customize options</summary><div class="builder"></div></details>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p>
+    The built pages live in <code>public/</code>. Run <code>pnpm build</code> after editing the sources.
+    See <code>README.md</code> for per-page options and webcam placement.
+  </p>
+</footer>
+
+<script type="module" src="js/index.js"></script>
+</body>
+</html>

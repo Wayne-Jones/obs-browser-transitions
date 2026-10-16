@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starting Soon</title>
+<!--
+============================================================
+   STARTING SOON scene  (OBS Browser Source, 1920x1080, full-screen scene)
+   Params: minutes (default 5, 0 = no countdown), next, channel, kicker, msg,
+           accent (hex without #), transparent (drop the dark background)
+   Portrait screens / a vertical 1080x1920 canvas switch to a vertical layout automatically.
+============================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/starting.css">
+</head>
+<body class="solid">
+<div class="stage">
+  <div class="top rise">
+    <div class="chip panel compact"><span class="dot"></span><b id="channel">yourchannel</b></div>
+    <div class="clock" id="clock"></div>
+  </div>
+  <main class="hero">
+    <div class="kicker rise delay-1" id="kicker">Stream</div>
+    <h1 class="rise delay-2" id="title">Starting <span class="highlight">soon</span></h1>
+    <p class="subtitle rise delay-2" id="msg" hidden></p>
+    <div class="count rise delay-3" id="count"></div>
+    <div class="track rise delay-3" id="track"><div class="fill" id="fill"></div></div>
+    <div class="next rise delay-4" id="nextRow"><span>Up next</span><b id="next">Just chatting</b></div>
+  </main>
+  <div class="marquee"><div class="marquee-track" id="marquee-track"></div></div>
+</div>
+<div class="hint">Params: ?minutes=10&amp;next=Ranked%20grind&amp;channel=you&amp;accent=FF4D8D</div>
+<script type="module" src="../js/overlays/starting.js"></script>
+</body>
+</html>

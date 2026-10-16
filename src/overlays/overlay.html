@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stream Overlay</title>
+<!--
+============================================================
+   OBS BROWSER SOURCE
+   Size: 1920x1080 (any 16:9 works, everything scales with 1rem = 1/100 of stage width)
+   Background is transparent. Add ?bg=1 to preview on a checkerboard.
+   Params: name, title, accent, goal, goalMax, goalLabel,
+           scene (starting|brb|ending), minutes, lower=0|1
+   Portrait screens / a vertical 1080x1920 canvas switch to a vertical layout automatically.
+============================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/overlay.css">
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <div class="alert panel" id="alert">
+    <div class="icon" id="alertIcon">+</div>
+    <div>
+      <small id="alertKind">New follower</small>
+      <strong id="alertName">username</strong>
+      <em id="alertSub"></em>
+    </div>
+  </div>
+
+  <div class="lower" id="lower">
+    <div class="bar"></div>
+    <div class="body panel">
+      <h1 id="name">Your Name</h1>
+      <p id="title">Playing • Talking • Making</p>
+    </div>
+  </div>
+
+  <div class="goal panel" id="goal">
+    <div class="row"><span id="goalLabel">Follower goal</span><b id="goalNum">0 / 100</b></div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+  </div>
+
+  <div class="scene" id="scene">
+    <div class="card panel">
+      <div class="kicker" id="sceneKicker">Stream</div>
+      <h2 id="sceneTitle">Starting <span class="highlight">soon</span></h2>
+      <div class="count" id="count"></div>
+    </div>
+  </div>
+</div>
+<div class="hint">Preview keys: 1 follow · 2 sub · 3 lower third · 4 scene · 5 goal +1 · 6 toggle goal</div>
+<script type="module" src="../js/overlays/overlay.js"></script>
+</body>
+</html>
