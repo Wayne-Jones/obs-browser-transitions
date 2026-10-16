@@ -1,18 +1,21 @@
 # OBS overlays
 
-A set of browser-source overlays for OBS: scene pages, a webcam frame, screenshare layouts, alerts and a
-stinger transition. Minimal dark panels with a bi-flag gradient (magenta → purple → blue) as the one pop of color.
+A set of browser-source overlays for OBS: scene pages, a webcam frame, screenshare layouts, alerts and
+stinger transitions in seven wipe styles. Minimal dark panels with a bi-flag gradient (magenta → purple → blue)
+as the one pop of color.
 
-Plain HTML, CSS and JavaScript. No build step.
+TypeScript for the scripts, plain HTML and CSS for the pages. `pnpm build` compiles the scripts and copies the
+static pages into `public/`, which is what you open in OBS (or deploy).
 
 ![Alerts](docs/alerts.png)
 
 ## Quick start
 
-1. Keep the `overlays/` folder together. The pages load `css/` and `js/` from next to them.
-2. In OBS, add a **Browser** source, tick **Local file**, choose a page from `overlays/`, and set it to **1920 × 1080**
+1. Install and build: `pnpm install` then `pnpm build`. This writes the ready-to-use pages to `public/`.
+2. Keep the `public/` folder together. The pages load `css/` and `js/` from next to them.
+3. In OBS, add a **Browser** source, tick **Local file**, choose a page from `public/overlays/`, and set it to **1920 × 1080**
    (or **1080 × 1920** for a vertical canvas).
-3. Add options to the end of the page address, for example
+4. Add options to the end of the page address, for example
    `starting.html?minutes=10&next=Ranked%20grind&channel=mychannel`.
 
 The pages use Google Fonts (Space Grotesk and Space Mono). Without an internet connection they fall back to system fonts.
@@ -31,7 +34,7 @@ the 1080 × 1920 layout. Both scale smoothly, so 2K and 4K look identical to 108
 | `screenshare.html` | Game or screen capture with a corner webcam and nameplate | transparent |
 | `screenshare-side.html` | Screen on one side, full-height webcam sidebar | transparent |
 | `overlay.html` | Alerts, follower goal, lower third and scene card | transparent |
-| `transitions/stinger.html` | Scene transition for the Browser Transition plugin | transparent |
+| `transitions/stinger.html` | Scene transition for the Browser Transition plugin (+6 variants, below) | transparent |
 | `screenshare-noname.html`, `screenshare-side-noname.html`, `overlay-noname.html` | The same without the nameplate / lower third | transparent |
 
 Transparent pages sit **above** your sources. The webcam windows are hollow so the camera shows through.
@@ -44,7 +47,7 @@ Add these to the page address. Replace spaces with `%20`.
 | Option | Pages | What it does |
 |---|---|---|
 | `accent=FF4D8D` | all | Replaces the gradient with one flat color (hex, no `#`) |
-| `channel=mychannel` | starting, brb, ending, stinger | Channel name |
+| `channel=mychannel` | starting, brb, ending, all stingers | Channel name |
 | `name=Alex`, `title=Ranked grind` | webcam, screenshare*, overlay | Nameplate / lower third text |
 | `minutes=10` | starting, brb, overlay (scene card) | Countdown length. On `brb.html` leave it out to count up |
 | `next=Ranked grind` | starting, ending | "Up next" / "Next stream" text |
@@ -57,7 +60,7 @@ Add these to the page address. Replace spaces with `%20`.
 | `lower=0` | overlay | Start with the lower third hidden |
 | `scene=brb` | overlay | Start with a scene card showing (`starting`, `brb`, `ending`) |
 | `transparent` | starting, brb, ending | Remove the dark background |
-| `word=Be right back` | stinger | Text shown at the midpoint |
+| `word=Be right back` | all stingers | Text shown at the midpoint |
 
 ## Placing your camera and screen
 
@@ -115,10 +118,10 @@ inside the page (for example a StreamElements custom widget calling `window.over
 
 ## Stinger transition
 
-`transitions/stinger.html` is built for the [Browser Transition](https://obsproject.com/forum/resources/browser-transition.1653/) plugin.
+The stinger pages are built for the [Browser Transition](https://obsproject.com/forum/resources/browser-transition.1653/) plugin.
 
 1. In OBS, add a **Browser Transition** under Scene Transitions.
-2. Point it at `transitions/stinger.html` (Local file), 1920 × 1080.
+2. Point it at a page from `public/transitions/` (Local file), 1920 × 1080.
 3. Duration about 1000–1400 ms, transition point 50%. Leave **Track matte** off.
 
 The page stays transparent until the plugin sends `transitionStart`. It wipes in, covers the screen at the
@@ -126,24 +129,59 @@ transition point (when OBS swaps scenes), then wipes out.
 
 ![Stinger](docs/stinger.gif)
 
+### Variants
+
+Every variant shares the same ink layer, accent stripe and midpoint message — only the wipe shape changes.
+
+| Page | Wipe |
+|---|---|
+| `stinger.html` | Left-to-right sweep |
+| `stinger-vertical.html` | Top-to-bottom sweep |
+| `stinger-diagonal.html` | Left-to-right sweep, skewed 18° |
+| `stinger-diamond.html` | Left-to-right sweep, rotated 45° and enlarged |
+| `stinger-radial.html` | Circle expanding from the centre |
+| `stinger-iris.html` | Symmetric open from the middle outwards |
+| `stinger-stepped.html` | Left-to-right sweep snapped to 12 visible steps |
+
+| Vertical | Diagonal | Radial |
+|---|---|---|
+| ![Vertical](docs/stinger-vertical.gif) | ![Diagonal](docs/stinger-diagonal.gif) | ![Radial](docs/stinger-radial.gif) |
+
+| Diamond | Iris | Stepped |
+|---|---|---|
+| ![Diamond](docs/stinger-diamond.gif) | ![Iris](docs/stinger-iris.gif) | ![Stepped](docs/stinger-stepped.gif) |
+
+Add `?bg=1` to preview any stinger in a normal browser; it loops and replays on click. While previewing,
+`duration=1200` and `tp=0.5` override the timing (OBS ignores both).
+
 ## Project layout
 
 ```
-overlays/        the pages (open these in OBS)
+src/             sources
+  overlays/      page HTML
+  transitions/   stinger HTML
   css/           base.css (shared) plus one stylesheet per page
-  js/            base.js (shared helpers) plus one script per page
+  scripts/       TypeScript (base.ts, per-page scripts, shared stinger core)
+public/          build output — the pages to open in OBS (git-ignored)
 docs/            preview images used in this README
-tools/           check_pages.py, make_previews.py
+tests/           Playwright page checks
+types/           ambient browser-global declarations shared by the tests and tooling
+scripts/         build + preview tooling (build.ts, previews.ts)
 ```
 
-Colors and spacing live in `overlays/css/base.css`; the colors are the CSS variables at the top
+`tsconfig.json` drives the build (`src/scripts` → `public/js`); `tsconfig.test.json` type-checks the tests and
+tooling without emitting anything.
+
+Colors and spacing live in `src/css/base.css`; the colors are the CSS variables at the top
 (`--flag-magenta`, `--flag-purple`, `--flag-blue`). One `rem` equals 1% of the screen width on a landscape
 screen, so everything scales together.
 
 ## Development
 
 ```
-pip install -r tools/requirements.txt
-python3 tools/check_pages.py       # renders every page at 6 screen sizes and checks the behaviors
-python3 tools/make_previews.py     # regenerates the images in docs/
+pnpm install
+pnpm build      # compiles src/scripts to public/js and copies css + html into public/
+pnpm typecheck  # type-checks the Playwright tests and build tooling (emits nothing)
+pnpm test       # builds, type-checks, then runs the Playwright checks against public/
+pnpm previews   # builds, then regenerates the preview images in docs/
 ```
