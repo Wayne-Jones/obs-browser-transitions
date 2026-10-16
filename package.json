@@ -5,7 +5,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "node scripts/build.ts",
-    "test": "npx playwright test tests/check-pages.test.ts"
+    "typecheck": "tsc -p tsconfig.test.json",
+    "test": "pnpm build && pnpm typecheck && playwright test"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
