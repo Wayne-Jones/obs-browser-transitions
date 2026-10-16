@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node scripts/build.ts",
     "typecheck": "tsc -p tsconfig.test.json",
-    "test": "pnpm build && pnpm typecheck && playwright test"
+    "test": "pnpm build && pnpm typecheck && playwright test",
+    "previews": "pnpm build && node scripts/previews.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
